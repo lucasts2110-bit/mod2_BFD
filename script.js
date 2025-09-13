@@ -52,9 +52,29 @@ function renderizarLista() {
 
         li.appendChild(removerBtn);
         listaDeItensUl.appendChild(li);
+
+        //criar o botao de atualizar para cada item
+        const atualizarBtn = document.createElement('button');
+        atualizarBtn.textContent = 'Atualizar';
+        atualizarBtn.className = 'atualizarBtn';
+        atualizarBtn.onclick = () => atualizarItem(indice);
+
+        li.appendChild(atualizarBtn);
+        listaDeItensUl.appendChild(li);
+
+        
     });
 }
 
 // Adiciona os event listeners aos botões
 itemForm.addEventListener('submit', adicionarItem);
 limparBtn.addEventListener('click', limparLista);
+atualizarBtn.addEventListener('click', atualizarItem);
+
+// Função para atualizar um item da lista
+function atualizarItem(indice) {
+    const novoItem = prompt('Atualize o item:', listaDeCompras[indice]);
+    if (novoItem !== null && novoItem.trim() !== '') {
+        listaDeCompras[indice] = novoItem.trim();
+        renderizarLista();
+    }}
