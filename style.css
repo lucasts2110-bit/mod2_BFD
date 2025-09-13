@@ -115,3 +115,16 @@ footer {
     color: white;
     margin-top: auto;
 }
+
+.atualizarBtn {
+    background-color: #008CBA;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.8em;
+    border-radius: 3px;
+    
+}
+
+.atualizarBtn:hover {
+    background-color: #007bb5;
+}
