@@ -1,53 +1,124 @@
-// Array para armazenar os itens da lista
-let listaDeCompras = [];
+// Array de produtos
+let products = [];
+let editingId = null;
 
-// Referências aos elementos do DOM
-const itemForm = document.getElementById('itemForm');
-const itemInput = document.getElementById('itemInput');
-const listaDeItensUl = document.getElementById('listaDeItens');
+// Mostrar página
+function showPage(pageId) {
+    // Ocultar todas as páginas
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
 
-// Função para adicionar um item à lista
-function adicionarItem(event) {
-    // Impede o envio do formulário, que recarregaria a página
-    event.preventDefault();
+    // Mostrar a selecionada
+    document.getElementById(pageId).classList.add('active');
+    document.querySelector(`[onclick="showPage('${pageId}')"]`).classList.add('active');
 
-    const novoItem = itemInput.value.trim();
+    if (pageId === 'lista') {
+        renderTable();
+    }
 
-    if (novoItem) {
-        listaDeCompras.push(novoItem);
-        renderizarLista();
-        itemInput.value = ''; // Limpa o campo de entrada
-        itemInput.focus(); // Coloca o foco de volta no campo
+    if (pageId !== 'cadastro' && editingId) {
+        cancelEdit();
     }
 }
 
-// Função para remover um item da lista
-function removerItem(indice) {
-    listaDeCompras.splice(indice, 1);
-    renderizarLista();
-}
+// Submit do formulário
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('product-form').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-// Função para exibir os itens na tela
-function renderizarLista() {
-    // Limpa a lista antes de renderizar novamente
-    listaDeItensUl.innerHTML = '';
+        const product = {
+            id: editingId || Date.now().toString(),
+            nome: document.getElementById('nome').value,
+            preco: parseFloat(document.getElementById('preco').value),
+            categoria: document.getElementById('categoria').value,
+            origem: document.getElementById('origem').value,
+            lote: document.getElementById('lote').value,
+            validade: document.getElementById('validade').value
+        };
 
-    // Cria um item de lista (<li>) para cada item no array
-    listaDeCompras.forEach((item, indice) => {
-        const li = document.createElement('li');
-        li.textContent = item;
+        if (editingId) {
+            // Editar
+            const index = products.findIndex(p => p.id === editingId);
+            products[index] = product;
+            editingId = null;
+            document.getElementById('form-title').textContent = 'Cadastrar Produto';
+            alert('Produto editado!');
+        } else {
+            // Adicionar
+            products.push(product);
+            alert('Produto adicionado!');
+        }
 
-        // Cria o botão de remoção para cada item
-        const removerBtn = document.createElement('button');
-        removerBtn.textContent = 'Remover';
-        removerBtn.className = 'removerBtn';
-        removerBtn.onclick = () => removerItem(indice);
-
-        li.appendChild(removerBtn);
-        listaDeItensUl.appendChild(li);
+        this.reset();
+        showPage('lista');
     });
+});
+
+// Editar produto
+function editProduct(id) {
+    const product = products.find(p => p.id === id);
+    if (product) {
+        document.getElementById('nome').value = product.nome;
+        document.getElementById('preco').value = product.preco;
+        document.getElementById('categoria').value = product.categoria;
+        document.getElementById('origem').value = product.origem;
+        document.getElementById('lote').value = product.lote;
+        document.getElementById('validade').value = product.validade;
+        
+        editingId = id;
+        document.getElementById('form-title').textContent = 'Editar Produto';
+        showPage('cadastro');
+    }
 }
 
-// Adiciona os event listeners aos botões
-itemForm.addEventListener('submit', adicionarItem);
-limparBtn.addEventListener('click', limparLista);
+// Excluir produto
+function deleteProduct(id) {
+    if (confirm('Excluir este produto?')) {
+        products = products.filter(p => p.id !== id);
+        renderTable();
+        alert('Produto excluído!');
+    }
+}
+
+// Cancelar edição
+function cancelEdit() {
+    document.getElementById('product-form').reset();
+    editingId = null;
+    document.getElementById('form-title').textContent = 'Cadastrar Produto';
+}
+
+// Renderizar tabela
+function renderTable() {
+    const tbody = document.getElementById('product-tbody');
+    const table = document.getElementById('product-table');
+    const noProducts = document.getElementById('no-products');
+
+    tbody.innerHTML = '';
+
+    if (products.length === 0) {
+        noProducts.style.display = 'block';
+        table.style.display = 'none';
+    } else {
+        noProducts.style.display = 'none';
+        table.style.display = 'table';
+
+        products.forEach(product => {
+            const row = tbody.insertRow();
+            row.innerHTML = `
+                <td>${product.nome}</td>
+                <td>R$ ${product.preco.toFixed(2)}</td>
+                <td>${product.categoria}</td>
+                <td>${product.origem}</td>
+                <td>${product.lote}</td>
+                <td>${product.validade}</td>
+                <td>
+                    <button class="action-btn edit-btn" onclick="editProduct('${product.id}')">Editar</button>
+                    <button class="action-btn delete-btn" onclick="deleteProduct('${product.id}')">Excluir</button>
+                </td>
+            `;
+        });
+    }
+}
+
+// Inicializar
+document.addEventListener('DOMContentLoaded', renderTable);
