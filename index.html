@@ -7,25 +7,113 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Minha Lista de Compras</h1>
-    </header>
-
-    <main>
+    <!-- Navegação Simples -->
+    <nav class="navbar">
         <div class="container">
+<<<<<<< Updated upstream
             <form id="itemForm">
                 <input type="text" id="itemInput" placeholder="Adicionar novo item..." required>
                 <button type="submit" id="adicionarBtn">Adicionar</button>
             </form>
+=======
+            <h1>Gerenciador de Produtos</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('home')" class="nav-btn active">Início</button>
+                <button onclick="showPage('cadastro')" class="nav-btn">Cadastro</button>
+                <button onclick="showPage('lista')" class="nav-btn">Lista</button>
+            </div>
+>>>>>>> Stashed changes
         </div>
+    </nav>
 
-        <ul id="listaDeItens">
-            </ul>
-    </main>
+    <!-- Página Inicial (Home) -->
+    <section id="home" class="page active">
+        <div class="container">
+            <h2>Bem-vindo!</h2>
+            <p>Gerencie produtos: cadastre, liste, edite e exclua itens.</p>
+            <div class="home-buttons">
+                <button onclick="showPage('cadastro')" class="btn">Cadastrar Produto</button>
+                <button onclick="showPage('lista')" class="btn">Ver Lista</button>
+            </div>
+        </div>
+    </section>
 
+<<<<<<< Updated upstream
     <footer>
         <p>&copy; 2024 Lista de Compras. Todos os direitos reservados.</p>
     </footer>
+=======
+    <!-- Página de Cadastro -->
+    <section id="cadastro" class="page">
+        <div class="container">
+            <h2 id="form-title">Cadastrar Produto</h2>
+            <form id="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" id="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preço (R$):</label>
+                        <input type="number" id="preco" min="0" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoria:</label>
+                        <select id="categoria" required>
+                            <option value="">Selecione</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Alimentos">Alimentos</option>
+                            <option value="Vestuário">Vestuário</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Origem:</label>
+                        <input type="text" id="origem" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Lote:</label>
+                        <input type="text" id="lote" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Validade:</label>
+                        <input type="date" id="validade" required>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" onclick="cancelEdit()" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Página de Lista -->
+    <section id="lista" class="page">
+        <div class="container">
+            <h2>Lista de Produtos</h2>
+            <p id="no-products" style="display: none;">Nenhum produto cadastrado. <button onclick="showPage('cadastro')" class="btn">Cadastrar</button></p>
+            <table id="product-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Categoria</th>
+                        <th>Origem</th>
+                        <th>Lote</th>
+                        <th>Validade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="product-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+>>>>>>> Stashed changes
 
     <script src="script.js"></script>
 </body>
