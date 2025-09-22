@@ -5,7 +5,6 @@ let listaDeCompras = [];
 const itemForm = document.getElementById('itemForm');
 const itemInput = document.getElementById('itemInput');
 const listaDeItensUl = document.getElementById('listaDeItens');
-const limparBtn = document.getElementById('limparBtn');
 
 // Função para adicionar um item à lista
 function adicionarItem(event) {
@@ -25,12 +24,6 @@ function adicionarItem(event) {
 // Função para remover um item da lista
 function removerItem(indice) {
     listaDeCompras.splice(indice, 1);
-    renderizarLista();
-}
-
-// Função para limpar a lista inteira
-function limparLista() {
-    listaDeCompras = [];
     renderizarLista();
 }
 
